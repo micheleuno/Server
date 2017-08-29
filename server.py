@@ -25,8 +25,11 @@ def ObtenerDirectorio(str):
   pos1 = str.find(" /") 
   pos2 = str.find("HTTP")
   Directorio = str[pos1+1:pos2-1]  
+  #
   if sys.version_info < (2, 8): #Segun la version de python
     Directorio =  urllib2.unquote(Directorio) #Encodear en caso de espacios
+    Directorio = Directorio.decode('latin-1') #y cosas raras (python menor a 3)
+    Directorio = Directorio.encode('utf-8')     
   else:
     Directorio =  urllib.request.unquote(Directorio)
   return Directorio;
@@ -83,7 +86,6 @@ while True:
   request = client_connection.recv(1024) #obtener request
   mensaje = request.decode('utf-8') #Codificar a String
   path=ObtenerDirectorio(mensaje)
-  print("Path: "+path)
   Directorio =(ObtenerDirectorio2(mensaje))
   Protocolo = (ObtenerProtocolo(mensaje))
   Metodo = (ObtenerMetodo(mensaje))
